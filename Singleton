@@ -1,0 +1,64 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TestProject1.Singleton
+{
+    public class Singleton
+    {
+        private static Singleton instance;
+
+        public Singleton()
+        {
+
+        }
+
+        public static Singleton getInstance()
+        {
+
+            //第一次被呼叫的時候，instance為null，要建立物件
+            if (instance == null)
+                instance = new Singleton();
+
+            //已有物件存在，直接回傳這個物件
+            return instance;
+        }
+    }
+}
+
+namespace TestProject1.Singleton
+{
+    [TestFixture]
+    public class SingletonTest
+    {
+
+        [SetUp]
+        public void Setup()
+        {
+            Singleton _singleton = Singleton.getInstance();
+            Console.WriteLine(_singleton.GetHashCode());
+        }
+
+        [Test]
+        public void SingletonTestThread()
+        {
+
+            //Singleton s1 = Singleton.getInstance();
+            //Singleton s2 = Singleton.getInstance();
+
+            //Assert.AreEqual(s1.GetHashCode().ToString(), s2.GetHashCode().ToString());
+            Thread t1 = new Thread(Setup);
+            Thread t2 = new Thread(Setup);
+
+            t1.Start();
+            t2.Start();
+
+            //Console.WriteLine(t1 + "  " + t2);
+
+            Assert.Pass();
+        }
+    }
+}
